@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve Pro - Sign In</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, #06b6d4 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-floating input {
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            padding: 1rem 1rem;
+        }
+
+        .form-floating input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+
+        .login-btn {
+            background: var(--gradient);
+            border: none;
+            padding: 15px 40px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            transform: none;
+        }
+
+        .auth-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        .demo-creds {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body class="d-flex align-items-center min-vh-100 p-3">
+    <!-- Floating Decorations -->
+    <div class="floating-shapes" style="top: 20%; left: 10%; animation-delay: 0s;"><i class="fas fa-gem fa-3x"></i>
+    </div>
+    <div class="floating-shapes" style="bottom: 20%; right: 10%; animation-delay: 3s;"><i class="fas fa-star fa-3x"></i>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7 col-12">
+                <div class="login-card p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <div class="auth-badge mb-4 d-inline-block">
+                            <i class="fas fa-sign-in-alt me-2"></i>Welcome Back
+                        </div>
+                        <h1 class="display-5 fw-bold mb-3">Sign In to Evolve</h1>
+                        <p class="lead text-muted mb-0">Access your productivity dashboard</p>
+                    </div>
+
+                    <!-- Firebase Status -->
+                    <div id="firebaseStatus" class="alert d-none mb-4" role="alert">
+                        <i class="fas fa-circle-check me-2 text-success" id="statusIcon"></i>
+                        <span id="statusText"></span>
+                    </div>
+
+                    <!-- Demo Credentials -->
+                    <div class="demo-creds mb-4">
+                        <h6 class="mb-2"><i class="fas fa-magic me-2 text-success"></i>Demo Login</h6>
+                        <div class="row g-2 small">
+                            <div class="col-md-6">
+                                <strong>Email:</strong> demo@evolve.com
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Password:</strong> demopass123
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm">
+                        <!-- Email -->
+                        <div class="form-floating mb-4">
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                            <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="showPassword">
+                                <label class="form-check-label small text-muted" for="showPassword">
+                                    Show password
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Remember me for 30 days
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn login-btn btn-lg w-100 mb-4" id="loginBtn" disabled>
+                            <span class="btn-text"><i class="fas fa-rocket me-2"></i>Sign In</span>
+                            <span class="spinner-border spinner-border-sm d-none me-2" role="status"
+                                id="loadingSpinner"></span>
+                        </button>
+                    </form>
+
+                    <!-- Social Login -->
+                    <div class="text-center">
+                        <p class="text-muted mb-4">Or sign in with</p>
+                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                            <button class="btn btn-outline-primary px-4 py-2" id="googleSignin">
+                                <i class="fab fa-google me-2"></i>Google
+                            </button>
+                            <button class="btn btn-outline-success px-4 py-2" id="phoneSignin">
+                                <i class="fas fa-mobile-alt me-2"></i>Phone OTP
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Links -->
+                    <div class="text-center mt-4 pt-4 border-top">
+                        <p class="mb-3">
+                            <a href="#" class="text-decoration-none text-muted me-3" id="forgotPassword">Forgot
+                                Password?</a>
+                            <a href="signup.html" class="text-decoration-none fw-semibold">Create New Account</a>
+                        </p>
+                        <p class="small text-muted mb-0">
+                            <i class="fas fa-shield-alt me-1"></i> Secured with Firebase Auth
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Firebase Config (Same as other pages)
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+        import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDyXIEdeFXZ3rPYelsz6FiKfvYRlN-Vb7E",
+            authDomain: "evolve-7d44b.firebaseapp.com",
+            projectId: "evolve-7d44b",
+            storageBucket: "evolve-7d44b.firebasestorage.app",
+            messagingSenderId: "142678535958",
+            appId: "1:142678535958:web:741211a6df75d7b9f42a37",
+            measurementId: "G-SCY9N91VXR"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const firebaseStatus = document.getElementById('firebaseStatus');
+        const showPassword = document.getElementById('showPassword');
+        const passwordInput = document.getElementById('password');
+        const rememberMe = document.getElementById('rememberMe');
+
+        // Auto-login check
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Already logged in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Form Validation
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            loginBtn.disabled = !(email && password.length >= 6);
+        }
+
+        // Event Listeners
+        ['email', 'password'].forEach(id => {
+            document.getElementById(id).addEventListener('input', validateForm);
+        });
+
+        // Show/Hide Password
+        showPassword.addEventListener('change', () => {
+            passwordInput.type = showPassword.checked ? 'text' : 'password';
+        });
+
+        // Status Messages
+        function showStatus(message, type = 'success') {
+            firebaseStatus.className = `alert alert-${type === 'success' ? 'success' : 'danger'} d-flex align-items-center`;
+            document.getElementById('statusIcon').className = `fas fa-circle-${type === 'success' ? 'check' : 'x-mark'} me-2 text-${type}`;
+            document.getElementById('statusText').textContent = message;
+            firebaseStatus.classList.remove('d-none');
+
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => firebaseStatus.classList.add('d-none'), 3000);
+            }
+        }
+
+        // Email/Password Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Loading state
+                loginBtn.disabled = true;
+                document.querySelector('.btn-text').style.display = 'none';
+                loadingSpinner.classList.remove('d-none');
+
+                // Firebase Auth
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Save to LocalStorage if "Remember Me" checked
+                if (rememberMe.checked) {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    const userData = userDoc.exists() ? userDoc.data() : {};
+
+                    const userInfo = {
+                        uid: user.uid,
+                        email: user.email,
+                        fullName: user.displayName || userData.fullName || 'User',
+                        phone: userData.phone || '',
+                        plan: userData.plan || 'starter',
+                        timestamp: Date.now()
+                    };
+                    localStorage.setItem('evolveUser', JSON.stringify(userInfo));
+                }
+
+                showStatus('Login successful! Redirecting...', 'success');
+
+                // Redirect
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Login failed. Please try again.';
+
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Incorrect password. Try again.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed attempts. Try again later.';
+                        break;
+                }
+                showStatus(errorMessage, 'error');
+            } finally {
+                // Reset button
+                loginBtn.disabled = false;
+                document.querySelector('.btn-text').style.display = 'inline';
+                loadingSpinner.classList.add('d-none');
+            }
+        });
+
+        // Google Signin
+        document.getElementById('googleSignin').addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+
+                // Save user data
+                localStorage.setItem('evolveUser', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    fullName: user.displayName,
+                    plan: 'pro'
+                }));
+
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                showStatus('Google login failed.', 'error');
+            }
+        });
+
+        // Forgot Password (Demo)
+        document.getElementById('forgotPassword').addEventListener('click', (e) => {
+            e.preventDefault();
+            showStatus('Password reset link sent to your email!', 'success');
+        });
+
+        // Check LocalStorage for demo user
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('evolveUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                document.getElementById('email').value = user.email;
+                validateForm();
+            }
+        });
+    </script>
+</body>
+
+</html>

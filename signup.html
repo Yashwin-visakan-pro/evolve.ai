@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve Pro - Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, #06b6d4 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .signup-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-floating input,
+        .form-floating select {
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            padding: 1rem 1rem;
+        }
+
+        .form-floating input:focus,
+        .form-floating select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+
+        .signup-btn {
+            background: var(--gradient);
+            border: none;
+            padding: 15px 40px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .signup-btn:disabled {
+            opacity: 0.6;
+            transform: none;
+        }
+
+        .auth-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .strength-weak {
+            background: #ef4444;
+            width: 25%;
+        }
+
+        .strength-medium {
+            background: #f59e0b;
+            width: 50%;
+        }
+
+        .strength-strong {
+            background: #10b981;
+            width: 100%;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="d-flex align-items-center min-vh-100 p-3">
+    <!-- Floating Decorations -->
+    <div class="floating-shapes" style="top: 20%; left: 10%; animation-delay: 0s;"><i class="fas fa-gem fa-3x"></i>
+    </div>
+    <div class="floating-shapes" style="bottom: 20%; right: 10%; animation-delay: 3s;"><i class="fas fa-star fa-3x"></i>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-12">
+                <div class="signup-card p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <div class="auth-badge mb-4 d-inline-block">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </div>
+                        <h1 class="display-5 fw-bold mb-3">Join Evolve Pro</h1>
+                        <p class="lead text-muted mb-0">Create your account to unlock productivity features</p>
+                    </div>
+
+                    <!-- Firebase Status -->
+                    <div id="firebaseStatus" class="alert d-none mb-4" role="alert">
+                        <i class="fas fa-circle-check me-2 text-success" id="statusIcon"></i>
+                        <span id="statusText"></span>
+                    </div>
+
+                    <!-- Signup Form -->
+                    <form id="signupForm">
+                        <!-- Email -->
+                        <div class="form-floating mb-4">
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                            <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div class="form-floating mb-4">
+                            <input type="text" class="form-control" id="fullName" placeholder="Full Name" required>
+                            <label for="fullName"><i class="fas fa-user me-2"></i>Full Name</label>
+                        </div>
+
+                        <!-- Phone (India format) -->
+                        <div class="form-floating mb-4">
+                            <input type="tel" class="form-control" id="phone" placeholder="91XXXXXXXXX"
+                                pattern="[6-9]{1}[0-9]{9}" maxlength="10" required>
+                            <label for="phone"><i class="fas fa-phone me-2"></i>Phone (+91)</label>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"><i class="fas fa-lock me-1"></i>Password</label>
+                            <input type="password" class="form-control" id="password"
+                                placeholder="At least 8 characters" minlength="8" required>
+                            <div class="password-strength mt-2" id="passwordStrength"></div>
+                            <small class="text-muted">Minimum 8 characters with uppercase, lowercase & number</small>
+                        </div>
+
+                        <!-- Plan Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"><i class="fas fa-crown me-1"></i>Choose Plan</label>
+                            <select class="form-select" id="plan" required>
+                                <option value="">Select your plan</option>
+                                <option value="starter" data-price="499">Starter - ₹499/month</option>
+                                <option value="pro" data-price="999">Pro - ₹999/month (Most Popular)</option>
+                                <option value="enterprise" data-price="2999">Enterprise - ₹2999/month</option>
+                            </select>
+                        </div>
+
+                        <!-- Terms Checkbox -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to <a href="#" class="text-decoration-none fw-semibold">Terms of Service</a> &
+                                <a href="#" class="text-decoration-none fw-semibold">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn signup-btn btn-lg w-100 mb-4" id="signupBtn" disabled>
+                            <span class="btn-text"><i class="fas fa-rocket me-2"></i>Create Account</span>
+                            <span class="spinner-border spinner-border-sm d-none me-2" role="status"
+                                id="loadingSpinner"></span>
+                        </button>
+                    </form>
+
+                    <!-- Social Login -->
+                    <div class="text-center">
+                        <p class="text-muted mb-4">Or continue with</p>
+                        <div class="d-flex gap-3 justify-content-center">
+                            <button class="btn btn-outline-primary btn-lg px-4" id="googleSignin">
+                                <i class="fab fa-google me-2"></i>Google
+                            </button>
+                            <button class="btn btn-outline-primary btn-lg px-4" id="phoneSignin">
+                                <i class="fas fa-mobile-alt me-2"></i>Phone
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Login Link -->
+                    <div class="text-center mt-4 pt-4 border-top">
+                        <p class="mb-0">Already have an account? <a href="login.html"
+                                class="text-decoration-none fw-semibold">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Firebase Config (Replace with your config)
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Your Firebase config - REPLACE WITH YOUR ACTUAL CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyDyXIEdeFXZ3rPYelsz6FiKfvYRlN-Vb7E",
+            authDomain: "evolve-7d44b.firebaseapp.com",
+            projectId: "evolve-7d44b",
+            storageBucket: "evolve-7d44b.firebasestorage.app",
+            messagingSenderId: "142678535958",
+            appId: "1:142678535958:web:741211a6df75d7b9f42a37",
+            measurementId: "G-SCY9N91VXR"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const analytics = getAnalytics(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // DOM Elements
+        const signupForm = document.getElementById('signupForm');
+        const signupBtn = document.getElementById('signupBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const firebaseStatus = document.getElementById('firebaseStatus');
+        const passwordInput = document.getElementById('password');
+        const passwordStrength = document.getElementById('passwordStrength');
+
+        // Real-time Form Validation
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const plan = document.getElementById('plan').value;
+            const terms = document.getElementById('terms').checked;
+
+            const isValid = email && fullName && phone && password.length >= 8 && plan && terms;
+            signupBtn.disabled = !isValid;
+        }
+
+        // Password Strength Checker
+        passwordInput.addEventListener('input', () => {
+            const val = passwordInput.value;
+            let strength = 0;
+            if (val.length >= 8) strength++;
+            if (/[a-z]/.test(val)) strength++;
+            if (/[A-Z]/.test(val)) strength++;
+            if (/[0-9]/.test(val)) strength++;
+
+            passwordStrength.className = 'password-strength';
+            if (strength <= 2) {
+                passwordStrength.classList.add('strength-weak');
+            } else if (strength <= 3) {
+                passwordStrength.classList.add('strength-medium');
+            } else {
+                passwordStrength.classList.add('strength-strong');
+            }
+        });
+
+        // Form Listeners
+        ['email', 'fullName', 'phone', 'plan'].forEach(id => {
+            document.getElementById(id).addEventListener('input', validateForm);
+        });
+        document.getElementById('terms').addEventListener('change', validateForm);
+
+        // Show Status
+        function showStatus(message, type = 'success') {
+            firebaseStatus.className = `alert alert-${type === 'success' ? 'success' : 'danger'} d-flex align-items-center`;
+            document.getElementById('statusIcon').className = `fas fa-circle-${type === 'success' ? 'check' : 'x-mark'} me-2 text-${type}`;
+            document.getElementById('statusText').textContent = message;
+            firebaseStatus.classList.remove('d-none');
+            setTimeout(() => firebaseStatus.classList.add('d-none'), 5000);
+        }
+
+        // Main Signup Function
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const fullName = document.getElementById('fullName').value;
+            const phone = '+91' + document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const plan = document.getElementById('plan').value;
+
+            try {
+                // Show loading
+                signupBtn.disabled = true;
+                document.querySelector('.btn-text').style.display = 'none';
+                loadingSpinner.classList.remove('d-none');
+
+                // Create Firebase user
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Update user profile
+                await updateProfile(user, { displayName: fullName });
+
+                // Save user data to Firestore
+                await setDoc(doc(db, 'users', user.uid), {
+                    fullName,
+                    email,
+                    phone,
+                    plan,
+                    createdAt: new Date().toISOString(),
+                    isActive: true
+                });
+
+                // Save to LocalStorage
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    fullName: user.displayName,
+                    phone,
+                    plan,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('evolveUser', JSON.stringify(userData));
+
+                showStatus('Account created successfully! Redirecting...', 'success');
+
+                // Redirect to dashboard after 2s
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                let errorMessage = 'Signup failed. Please try again.';
+
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Email already registered. Please sign in.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password too weak. Use 8+ characters.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email format.';
+                        break;
+                }
+                showStatus(errorMessage, 'error');
+            } finally {
+                // Reset button
+                signupBtn.disabled = false;
+                document.querySelector('.btn-text').style.display = 'inline';
+                loadingSpinner.classList.add('d-none');
+            }
+        });
+
+        // Google Signin
+        document.getElementById('googleSignin').addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+
+                // Check if user exists in Firestore, create if not
+                const userDoc = await setDoc(doc(db, 'users', user.uid), {
+                    fullName: user.displayName || 'Google User',
+                    email: user.email,
+                    plan: 'pro',
+                    createdAt: new Date().toISOString(),
+                    provider: 'google'
+                }, { merge: true });
+
+                // Save to LocalStorage
+                localStorage.setItem('evolveUser', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    fullName: user.displayName,
+                    plan: 'pro'
+                }));
+
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                showStatus('Google signin failed.', 'error');
+            }
+        });
+
+        // Auto-check localStorage on load
+        window.addEventListener('load', () => {
+            const savedUser = localStorage.getItem('evolveUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                showStatus(`Welcome back, ${user.fullName}!`, 'success');
+            }
+            validateForm();
+        });
+    </script>
+</body>
+
+</html>

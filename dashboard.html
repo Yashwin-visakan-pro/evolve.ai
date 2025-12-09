@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve Pro - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, #06b6d4 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            height: 100vh;
+            position: fixed;
+            width: 260px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .stat-card {
+            background: white;
+            border: none;
+            border-radius: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .plan-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+        .topbar {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-4" id="sidebar">
+        <div class="text-center mb-5 pb-4 border-bottom">
+            <div class="d-inline-flex align-items-center justify-content-center bg-white p-3 rounded-circle shadow-lg mb-3"
+                style="width: 80px; height: 80px;">
+                <i class="fas fa-user-circle fa-2x text-primary"></i>
+            </div>
+            <h5 class="text-white mb-1" id="userName">Loading...</h5>
+            <span class="plan-badge small" id="userPlan">Loading...</span>
+        </div>
+
+        <nav class="nav flex-column mb-auto">
+            <a class="nav-link text-white-50 mb-3 p-3 rounded-3 active" href="#" data-section="overview">
+                <i class="fas fa-chart-line me-3"></i>Overview
+            </a>
+            <a class="nav-link text-white-50 mb-3 p-3 rounded-3" href="#" data-section="tasks">
+                <i class="fas fa-tasks me-3"></i>Tasks
+            </a>
+            <a class="nav-link text-white-50 mb-3 p-3 rounded-3" href="#" data-section="analytics">
+                <i class="fas fa-chart-bar me-3"></i>Analytics
+            </a>
+            <a class="nav-link text-white-50 mb-3 p-3 rounded-3" href="#" data-section="settings">
+                <i class="fas fa-cog me-3"></i>Settings
+            </a>
+            <a class="nav-link text-white-50 mb-3 p-3 rounded-3" href="#" data-section="billing">
+                <i class="fas fa-credit-card me-3"></i>Billing
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-4 border-top">
+            <a href="buy.html" class="btn btn-primary w-100 mb-3">
+                <i class="fas fa-shopping-cart me-2"></i>Upgrade Plan
+            </a>
+            <button class="btn btn-outline-light w-100" id="logoutBtn">
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar px-4 py-3 d-flex align-items-center justify-content-between">
+            <button class="btn btn-link d-lg-none text-dark p-0" id="toggleSidebar">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+            <h2 class="h4 mb-0 fw-bold text-dark" id="pageTitle">Dashboard</h2>
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <a class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2" href="#"
+                        role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge bg-danger rounded-pill">3</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">New task assigned</a></li>
+                        <li><a class="dropdown-item" href="#">Plan expires in 3 days</a></li>
+                    </ul>
+                </div>
+                <div class="text-end">
+                    <small class="text-muted d-block" id="welcomeMsg">Welcome back!</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="p-4 pt-0">
+            <!-- Overview Section -->
+            <section id="overviewSection">
+                <div class="row g-4 mb-5">
+                    <!-- Stats Cards -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card card-hover h-100 text-center p-4">
+                            <div class="stat-icon bg-primary text-white mb-3">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h3 class="display-4 fw-bold text-primary mb-1" data-target="247">0</h3>
+                            <p class="text-muted mb-0">Total Tasks</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card card-hover h-100 text-center p-4">
+                            <div class="stat-icon bg-success text-white mb-3">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h3 class="display-4 fw-bold text-success mb-1" data-target="189">0</h3>
+                            <p class="text-muted mb-0">Completed</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card card-hover h-100 text-center p-4">
+                            <div class="stat-icon bg-warning text-white mb-3">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3 class="display-4 fw-bold text-warning mb-1" data-target="58">0</h3>
+                            <p class="text-muted mb-0">Pending</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card card-hover h-100 text-center p-4">
+                            <div class="stat-icon bg-info text-white mb-3">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3 class="display-4 fw-bold text-info mb-1" data-target="92%">0</h3>
+                            <p class="text-muted mb-0">Productivity</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts & Recent Activity -->
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="card card-hover h-100">
+                            <div class="card-header bg-transparent border-0 pb-0">
+                                <h5 class="card-title mb-0">Weekly Productivity</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <canvas id="productivityChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card card-hover h-100">
+                            <div class="card-header bg-transparent border-0 pb-0">
+                                <h5 class="card-title mb-0">Recent Activity</h5>
+                            </div>
+                            <div class="card-body py-4">
+                                <div class="d-flex align-items-center mb-4 p-3 border-bottom">
+                                    <div class="bg-success text-white rounded-circle p-2 me-3">
+                                        <i class="fas fa-check fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Task Completed</h6>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-4 p-3 border-bottom">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                        <i class="fas fa-plus fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">New Project Added</h6>
+                                        <small class="text-muted">5 hours ago</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center p-3">
+                                    <div class="bg-warning text-white rounded-circle p-2 me-3">
+                                        <i class="fas fa-clock fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Reminder Set</h6>
+                                        <small class="text-muted">1 day ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section (Hidden by default) -->
+            <section id="tasksSection" class="d-none">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="mb-4">Your Tasks</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Task</th>
+                                                <th>Priority</th>
+                                                <th>Due Date</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Complete project proposal</td>
+                                                <td><span class="badge bg-danger">High</span></td>
+                                                <td>Dec 12, 2025</td>
+                                                <td><span class="badge bg-warning">Pending</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-success"><i
+                                                            class="fas fa-check"></i></button>
+                                                    <button class="btn btn-sm btn-outline-secondary ms-1"><i
+                                                            class="fas fa-edit"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Analytics Coming Soon -->
+            <section id="analyticsSection" class="d-none">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm card-hover">
+                            <div class="card-body text-center py-5">
+                                <div class="mb-3">
+                                    <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                                        <i class="fas fa-chart-bar me-1"></i> Advanced analytics
+                                    </span>
+                                </div>
+                                <h3 class="fw-bold mb-2">Analytics is cooking 🧠</h3>
+                                <p class="text-muted mb-4">
+                                    Soon you will see deep focus graphs, streaks, and AI insights on how Evolve boosts
+                                    your
+                                    productivity.
+                                </p>
+                                <div class="row justify-content-center g-3 mb-4">
+                                    <div class="col-md-3">
+                                        <div class="p-3 rounded-4 bg-light">
+                                            <h4 class="mb-1">Focus score</h4>
+                                            <p class="text-muted small mb-0">Daily, weekly & monthly patterns.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="p-3 rounded-4 bg-light">
+                                            <h4 class="mb-1">Task heatmap</h4>
+                                            <p class="text-muted small mb-0">Best hours to study or code.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-bell me-2"></i>Notify me when live
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Coming Soon -->
+            <section id="settingsSection" class="d-none">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm card-hover">
+                            <div class="card-body py-5 px-4 px-md-5">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-md-6">
+                                        <h3 class="fw-bold mb-2">
+                                            Settings hub is coming soon
+                                        </h3>
+                                        <p class="text-muted mb-3">
+                                            You will be able to control themes, notifications, AI behavior, and device
+                                            sync for
+                                            Evolve Pro from one place.
+                                        </p>
+                                        <ul class="list-unstyled text-muted small mb-4">
+                                            <li class="mb-2">
+                                                <i class="fas fa-circle text-success me-2"></i>Dark / light mode toggle.
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-circle text-primary me-2"></i>Custom AI tone (casual,
+                                                exam mode,
+                                                dev mode).
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-circle text-warning me-2"></i>Fine‑tune focus
+                                                notifications.
+                                            </li>
+                                        </ul>
+                                        <span class="badge bg-warning-subtle text-warning rounded-pill px-3 py-2">
+                                            <i class="fas fa-tools me-1"></i>In active development
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div
+                                            class="p-4 rounded-4 bg-light h-100 d-flex flex-column justify-content-center">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="fas fa-sliders-h fa-2x text-primary me-3"></i>
+                                                <div>
+                                                    <h6 class="mb-0">Future toggles</h6>
+                                                    <small class="text-muted">AI speed, creativity, and focus
+                                                        strictness.</small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="fas fa-mobile-alt fa-2x text-success me-3"></i>
+                                                <div>
+                                                    <h6 class="mb-0">Device sync</h6>
+                                                    <small class="text-muted">Link Evolve Pro, mobile, and web in one
+                                                        tap.</small>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-bell fa-2x text-warning me-3"></i>
+                                                <div>
+                                                    <h6 class="mb-0">Smart alerts</h6>
+                                                    <small class="text-muted">Only the notifications you really
+                                                        need.</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Billing Coming Soon -->
+            <section id="billingSection" class="d-none">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm card-hover">
+                            <div class="card-body text-center py-5 px-4">
+                                <div class="mb-3">
+                                    <span class="badge bg-info-subtle text-info px-3 py-2 rounded-pill">
+                                        <i class="fas fa-credit-card me-1"></i> Billing & subscriptions
+                                    </span>
+                                </div>
+                                <h3 class="fw-bold mb-2">Billing dashboard coming soon</h3>
+                                <p class="text-muted mb-4">
+                                    Manage Evolve Pro subscriptions, invoices, and upgrades from a clear,
+                                    student‑friendly billing
+                                    page.
+                                </p>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-4">
+                                        <div class="p-3 rounded-4 bg-light">
+                                            <i class="fas fa-receipt text-primary mb-2"></i>
+                                            <h6 class="mb-1">Invoices</h6>
+                                            <small class="text-muted">See and download receipts anytime.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 rounded-4 bg-light">
+                                            <i class="fas fa-rotate text-success mb-2"></i>
+                                            <h6 class="mb-1">Plan changes</h6>
+                                            <small class="text-muted">One‑click upgrade or cancel.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="p-3 rounded-4 bg-light">
+                                            <i class="fas fa-shield-alt text-warning mb-2"></i>
+                                            <h6 class="mb-1">Secure payments</h6>
+                                            <small class="text-muted">Razorpay / UPI / cards support.</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a href="buy.html" class="btn btn-primary">
+                                    <i class="fas fa-cart-plus me-2"></i>Go to pricing page
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Firebase + Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Config (Same as signup.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDyXIEdeFXZ3rPYelsz6FiKfvYRlN-Vb7E",
+            authDomain: "evolve-7d44b.firebaseapp.com",
+            projectId: "evolve-7d44b",
+            storageBucket: "evolve-7d44b.firebasestorage.app",
+            messagingSenderId: "142678535958",
+            appId: "1:142678535958:web:741211a6df75d7b9f42a37",
+            measurementId: "G-SCY9N91VXR"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const userNameEl = document.getElementById('userName');
+        const userPlanEl = document.getElementById('userPlan');
+        const welcomeMsgEl = document.getElementById('welcomeMsg');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+
+        // Check Auth State
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Get user data from Firestore
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const userData = userDoc.exists() ? userDoc.data() : {};
+
+                // Update UI
+                userNameEl.textContent = user.displayName || userData.fullName || 'User';
+                userPlanEl.textContent = userData.plan ?
+                    userData.plan.charAt(0).toUpperCase() + userData.plan.slice(1) + ' Plan' : 'Free Plan';
+                welcomeMsgEl.textContent = `Welcome back, ${user.displayName || userData.fullName || 'User'}!`;
+
+                // Check localStorage too
+                const localUser = JSON.parse(localStorage.getItem('evolveUser') || '{}');
+                if (!userData.fullName && localUser.fullName) {
+                    userNameEl.textContent = localUser.fullName;
+                }
+            } else {
+                // Redirect to signup if not logged in
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('[data-section]').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                document.querySelectorAll('section').forEach(s => s.classList.add('d-none'));
+                document.getElementById(link.dataset.section + 'Section').classList.remove('d-none');
+            });
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
+            localStorage.removeItem('evolveUser');
+            window.location.href = 'signup.html';
+        });
+
+        // Sidebar Toggle (Mobile)
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('translate-x-0');
+        });
+
+        // Counter Animation
+        function animateCounters() {
+            document.querySelectorAll('[data-target]').forEach(counter => {
+                const target = counter.getAttribute('data-target');
+                const increment = target.includes('%') ? 0.5 : parseInt(target) / 50;
+                let current = 0;
+                const timer = setInterval(() => {
+                    if (target.includes('%')) {
+                        current += increment;
+                        if (current >= parseFloat(target)) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current) + '%';
+                        }
+                    } else {
+                        current += increment;
+                        if (current >= parseInt(target)) {
+                            counter.textContent = parseInt(target).toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }
+                }, 30);
+            });
+        }
+
+        // Chart.js Productivity Chart
+        const ctx = document.getElementById('productivityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Productivity',
+                    data: [65, 59, 80, 81, 95, 90, 92],
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
+                }
+            }
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            setTimeout(animateCounters, 500);
+        });
+    </script>
+</body>
+
+</html>
